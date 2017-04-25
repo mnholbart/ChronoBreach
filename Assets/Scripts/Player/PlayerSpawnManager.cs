@@ -58,6 +58,11 @@ public class PlayerSpawnManager : MonoBehaviour {
             enabled = true;
             if (headsetCameraRig == null && GameManager.instance.GetVRMode() == GameManager.VRTKMode.Simulator)
                 headsetCameraRig = GameObject.FindObjectOfType<VRTK.SDK_InputSimulator>().transform;
+            if (headsetCameraRig == null && GameManager.instance.GetVRMode() == GameManager.VRTKMode.SteamVR)
+            {
+                headsetCameraRig = GameObject.FindObjectOfType<SteamVR_ControllerManager>().transform;
+                //Debug.Log(headsetCameraRig);
+            }
             missionObjectives = LevelManager.instance.GetMissionObjectives();
             if (missionObjectives == null)
                 Debug.LogError("Failed to get valid MissionObjectives");
@@ -75,8 +80,11 @@ public class PlayerSpawnManager : MonoBehaviour {
 
             if (i == charIndex)
             {
-                p.SetToPrimaryPlayer(headsetCameraRig.gameObject);
-                primaryPlayerInUse = g; 
+                if (headsetCameraRig != null)
+                {
+                    p.SetToPrimaryPlayer(headsetCameraRig.gameObject);
+                    primaryPlayerInUse = g;
+                }
             } else
             {
                 p.SetToSecondaryPlayer(playerParentObject);
@@ -139,5 +147,10 @@ public class PlayerSpawnManager : MonoBehaviour {
         playerParentObject = g.transform;
         playerParentObject.transform.position = Vector3.zero;
         playerParentObject.transform.rotation = Quaternion.identity;
+    }
+
+    public Player GetActivePlayer()
+    {
+        return primaryPlayerInUse.GetComponent<Player>();
     }
 }

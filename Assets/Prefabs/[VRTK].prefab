@@ -78,6 +78,7 @@ GameObject:
   - component: {fileID: 114542539015280812}
   - component: {fileID: 114472550847462936}
   - component: {fileID: 114252315037380466}
+  - component: {fileID: 114052033838950448}
   m_Layer: 0
   m_Name: PlayArea
   m_TagString: Untagged
@@ -127,8 +128,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000388112736564}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.06, y: 1.989, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4714209614323194}
@@ -214,6 +215,38 @@ MonoBehaviour:
   grabToPointerTip: 0
   controller: {fileID: 0}
   customOrigin: {fileID: 0}
+  directionIndicator: {fileID: 0}
+--- !u!114 &114052033838950448
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1376969287695744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 174429e04b0388249a137b2dc0050b66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableTeleport: 1
+  enableBodyCollisions: 1
+  ignoreGrabbedCollisions: 1
+  headsetYOffset: 0.2
+  movementThreshold: 0.0015
+  playAreaMovementThreshold: 0.00075
+  standingHistorySamples: 5
+  leanYThreshold: 0.5
+  stepUpYOffset: 0.3
+  stepThicknessMultiplier: 0.5
+  stepDropThreshold: 0.08
+  customRaycast: {fileID: 0}
+  layersToIgnore:
+    serializedVersion: 2
+    m_Bits: 4
+  fallRestriction: 0
+  gravityFallYThreshold: 1
+  blinkYThreshold: 0.15
+  floorHeightTolerance: 0.001
+  fallCheckPrecision: 5
 --- !u!114 &114184592680454724
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -226,6 +259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playareaCursor: {fileID: 0}
+  customRaycast: {fileID: 0}
   layersToIgnore:
     serializedVersion: 2
     m_Bits: 4
@@ -273,6 +307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playareaCursor: {fileID: 0}
+  customRaycast: {fileID: 0}
   layersToIgnore:
     serializedVersion: 2
     m_Bits: 4
@@ -309,6 +344,8 @@ MonoBehaviour:
   throwMultiplier: 1
   createRigidBodyWhenNotTouching: 0
   controllerAttachPoint: {fileID: 0}
+  controllerEvents: {fileID: 0}
+  interactTouch: {fileID: 0}
 --- !u!114 &114453234201062774
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -351,6 +388,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21b4bc319f4966f4faedb4f429f7c9c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeTillFade: 0
   blinkTransitionSpeed: 0.1
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &114542539015280812
@@ -375,7 +413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64e104da36bd3b04b90c6ae969ac66dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customRigidbodyObject: {fileID: 0}
+  customColliderContainer: {fileID: 0}
 --- !u!114 &114587018751439916
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -401,6 +439,7 @@ MonoBehaviour:
   grabToPointerTip: 0
   controller: {fileID: 0}
   customOrigin: {fileID: 0}
+  directionIndicator: {fileID: 0}
 --- !u!114 &114591001183425908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -417,6 +456,8 @@ MonoBehaviour:
   throwMultiplier: 1
   createRigidBodyWhenNotTouching: 0
   controllerAttachPoint: {fileID: 0}
+  controllerEvents: {fileID: 0}
+  interactTouch: {fileID: 0}
 --- !u!114 &114646866011199690
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -490,6 +531,7 @@ MonoBehaviour:
   usePressed: 0
   uiClickPressed: 0
   menuPressed: 0
+  controllerVisible: 1
 --- !u!114 &114738039164734660
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -502,6 +544,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useButton: 3
+  controllerEvents: {fileID: 0}
+  interactTouch: {fileID: 0}
+  interactGrab: {fileID: 0}
 --- !u!114 &114840330155477330
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -549,6 +594,7 @@ MonoBehaviour:
   usePressed: 0
   uiClickPressed: 0
   menuPressed: 0
+  controllerVisible: 1
 --- !u!114 &114846518036163562
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -603,7 +649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64e104da36bd3b04b90c6ae969ac66dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customRigidbodyObject: {fileID: 0}
+  customColliderContainer: {fileID: 0}
 --- !u!114 &114956566498071042
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -616,6 +662,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useButton: 3
+  controllerEvents: {fileID: 0}
+  interactTouch: {fileID: 0}
+  interactGrab: {fileID: 0}
 --- !u!114 &114965215511125248
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -630,6 +679,7 @@ MonoBehaviour:
   persistOnLoad: 0
   autoPopulateObjectReferences: 1
   autoManageScriptDefines: 1
+  activeScriptingDefineSymbolsWithoutSDKClasses: []
   actualBoundaries: {fileID: 0}
   actualHeadset: {fileID: 0}
   actualLeftController: {fileID: 0}

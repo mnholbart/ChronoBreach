@@ -12,7 +12,8 @@ public class Player : MonoBehaviour {
     [HideInInspector]
     public GameObject VRObject;
 
-
+    [SerializeField]
+    private CapsuleCollider collider;
     [SerializeField]
     private GameObject playerMesh;
     [SerializeField]
@@ -38,20 +39,23 @@ public class Player : MonoBehaviour {
 
     public void SetToPrimaryPlayer(GameObject vrRig)
     {
-        //playerMesh.SetActive(false);
+        collider.isTrigger = false;
+        playerMesh.SetActive(false);
         VRObject = vrRig;
         VRObject.transform.position = transform.position;
         VRObject.transform.rotation = transform.rotation;
-        transform.SetParent(vrRig.transform, true);
-        transform.localPosition += new Vector3(0, 1, 0);
+        //transform.SetParent(vrRig.transform, true);
+        //transform.localPosition += new Vector3(0, 1, 0);
+        //VRObject.transform.position -= new Vector3(0, 1, 0);
         input.SetRecordMode(VRObject, GameManager.instance.GetVRMode());
     }
 
     public void SetToSecondaryPlayer(Transform parent)
     {
-        //playerMesh.SetActive(true);
+        collider.isTrigger = false;
+        playerMesh.SetActive(true);
         VRObject = null;
-        transform.SetParent(parent, true);
+        //transform.SetParent(parent, true);
         input.SetPlaybackMode();
     }
 
@@ -60,6 +64,7 @@ public class Player : MonoBehaviour {
         ResetPlayer();
         transform.position = pos;
         transform.rotation = Quaternion.identity;
+        collider.isTrigger = true;
     }
 
     private void ResetPlayer()
@@ -73,6 +78,7 @@ public class Player : MonoBehaviour {
 
     private void OnUngrabbed(object sender, VRTK.InteractableObjectEventArgs e)
     {
+        Debug.Log("onungrabbed");
         Ray r = new Ray(e.interactingObject.transform.position, Vector3.down);
         RaycastHit hit;
         if (Physics.Raycast(r, out hit, 5, SpawnZoneLayerMask))

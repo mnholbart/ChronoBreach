@@ -114,10 +114,19 @@ public class GameManager : MonoBehaviour {
 
     private void SetVRMode()
     {
+        if (VRTK.VRTK_SDKManager.instance == null)
+        {
+            mode = VRTKMode.Null;
+            return;
+        }
+
         VRTK.SDK_BaseSystem system = VRTK.VRTK_SDKManager.instance.GetSystemSDK();
         if (system is VRTK.SDK_SimSystem)
         {
             mode = VRTKMode.Simulator;
+        } else if (system is VRTK.SDK_SteamVRSystem)
+        {
+            mode = VRTKMode.SteamVR;
         }
     }
 

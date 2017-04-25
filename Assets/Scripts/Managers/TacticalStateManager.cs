@@ -8,10 +8,15 @@ public class TacticalStateManager : MonoBehaviour {
 
     [HideInInspector]
     public bool initialized = false;
+    public float tacticalRigScalar = 10;
+    
     [SerializeField]
     private VRTK.VRTK_DestinationMarker LeftControllerPointer;
     [SerializeField]
     private VRTK.VRTK_DestinationMarker RightControllerPointer;
+
+    private Vector3 tacticalSpawnPosition;
+    private Transform vrRig;
 
     private void Awake()
     {
@@ -19,6 +24,9 @@ public class TacticalStateManager : MonoBehaviour {
             instance = this;
         else if (instance != null)
             Destroy(gameObject);
+
+        vrRig = GameObject.FindObjectOfType<SteamVR_ControllerManager>().transform;
+        tacticalSpawnPosition = vrRig.position;
     }
 
     private void Start()
@@ -67,5 +75,8 @@ public class TacticalStateManager : MonoBehaviour {
     private void EnableSelf()
     {
         enabled = true;
+
+        vrRig.localScale = Vector3.one * tacticalRigScalar;
+        vrRig.position = tacticalSpawnPosition;
     }
 }

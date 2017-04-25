@@ -30,7 +30,7 @@ public class SpawnableLocation : MonoBehaviour {
 
     public void AttachPlayerObject(GameObject g, int playerIndex)
     {
-        AttachPlayerObject(g, playerIndex, transform.position + new Vector3(0, g.GetComponentInChildren<Collider>().bounds.size.y/2, 0));
+        AttachPlayerObject(g, playerIndex, transform.position + new Vector3(playerIndex, g.GetComponentInChildren<Collider>().bounds.size.y/2, 0));
     }
 
     public void AttachPlayerObject(GameObject g, int playerIndex, Vector3 position)
@@ -40,6 +40,8 @@ public class SpawnableLocation : MonoBehaviour {
             if (t.playerObject == g)
             {
                 t.spawnPosition = position;
+                t.playerObject.transform.position = t.spawnPosition;
+                t.player.Respawn(t.spawnPosition);
                 return;
             }
         }
@@ -51,7 +53,7 @@ public class SpawnableLocation : MonoBehaviour {
         d.player = g.GetComponent<Player>();
         d.player.OnDetachFromSpawnArea += OnPlayerReAttach;
         d.player.OnFailDetachFromSpawnArea += OnPlayerFailAttach;
-        d.playerObject.transform.position = d.spawnPosition;
+        d.player.Respawn(d.spawnPosition);
         playersAttached.Add(d);
     }
 
@@ -60,7 +62,7 @@ public class SpawnableLocation : MonoBehaviour {
         for (int i = 0; i < playersAttached.Count; i++)
         {
             PlayerSpawnData d = playersAttached[i];
-            d.playerObject.GetComponent<Player>().Respawn(d.spawnPosition + new Vector3(i * d.playerObject.GetComponentInChildren<Collider>().bounds.size.x, 0, 0));
+            d.playerObject.GetComponent<Player>().Respawn(d.spawnPosition + new Vector3(i, -transform.localScale.y, 0));
         }
     }
 
@@ -75,7 +77,8 @@ public class SpawnableLocation : MonoBehaviour {
     private void OnPlayerFailAttach(GameObject g)
     {
         PlayerSpawnData d = playersAttached.Find(f => f.playerObject == g);
-        g.transform.position = d.spawnPosition;
+        d.player.Respawn(d.spawnPosition);
+        //g.transform.position = d.spawnPosition;
     }
 
     [System.Serializable]

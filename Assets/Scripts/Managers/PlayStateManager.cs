@@ -9,12 +9,16 @@ public class PlayStateManager : MonoBehaviour {
     [HideInInspector]
     public bool initialized = false;
 
+    private Transform vrRig;
+
     private void Awake()
     {
         if (instance == null)
             instance = this;
         else if (instance != null)
             Destroy(gameObject);
+
+        vrRig = GameObject.FindObjectOfType<SteamVR_ControllerManager>().transform;
     }
 
     private void Start()
@@ -43,5 +47,7 @@ public class PlayStateManager : MonoBehaviour {
     private void EnableSelf(int charIndex)
     {
         enabled = true;
+
+        vrRig.localScale = Vector3.one;
     }
 }

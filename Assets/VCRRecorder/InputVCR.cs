@@ -60,8 +60,6 @@ using System.Collections.Generic;
 
 public class InputVCR : MonoBehaviour
 {
-
-
 	#region Inspector properties
     public Recording.InputInfo[] inputsToRecord;
 // list of axis and button names ( from Input manager) that should be recorded
@@ -187,7 +185,7 @@ public class InputVCR : MonoBehaviour
 	/// Stop recording or playback and rewind Live input will be passed through
 	/// </summary>
 	public void Stop()
-	{
+	{			
 		_mode = InputVCRMode.Passthru;
 		currentFrame = 0;
 		playbackTime = 0;
@@ -237,67 +235,67 @@ public class InputVCR : MonoBehaviour
 	{
         return currentRecording;
 	}
-	
+    
 	void LateUpdate()
 	{	
 		if ( _mode == InputVCRMode.Playback )
 		{
-			// update last frame and this frame
-			// this way, all changes are transmitted, even if a button press lasts less than a frame (like in Input)
-			lastFrameInputs = thisFrameInputs;
-			
-			int lastFrame = currentFrame;
+            // update last frame and this frame
+            // this way, all changes are transmitted, even if a button press lasts less than a frame (like in Input)
+            lastFrameInputs = new Dictionary<string, Recording.InputInfo>(thisFrameInputs);
+
+            int lastFrame = currentFrame;
 			currentFrame = currentRecording.GetClosestFrame ( playbackTime );
-			
-			if ( currentFrame > currentRecording.totalFrames )
+
+            if ( currentFrame > currentRecording.totalFrames || playbackTime > (currentRecording.recordingLength + .2f) ) //Todo figure out a better way to end it before it tries to run more frames than the recording holds
 			{
 				// end of recording
 				if ( finishedPlayback != null )
-					finishedPlayback( );
+					finishedPlayback.Invoke();
 				Stop ();
-			}
-			else
-			{
-				// go through all changes in recorded input since last frame
-				var changedInputs = new Dictionary<string, Recording.InputInfo>();
-				for( int frame = lastFrame + 1; frame <= currentFrame; frame++ )
-                {
-					foreach( var input in currentRecording.GetInputs ( frame ) )
-					{
-						// thisFrameInputs only updated once per game frame, so all changes, no matter how brief, will be marked
-						// if button has changed
-						if ( !thisFrameInputs.ContainsKey ( input.inputName ) || !thisFrameInputs[input.inputName].Equals( input ) )
-						{
-							if ( changedInputs.ContainsKey ( input.inputName ) )
-								changedInputs[input.inputName] = input;
-							else
-								changedInputs.Add( input.inputName, input );
-						}
-					}
-				
-					if ( snapToSyncedLocation )	// custom code more effective, but this is enough sometimes
-					{
-						string posString = currentRecording.GetProperty ( frame, "position" );
-						if ( !string.IsNullOrEmpty ( posString ) )
-							transform.position = ParseVector3 ( posString );
-						
-						string rotString = currentRecording.GetProperty ( frame, "rotation" );
-						if ( !string.IsNullOrEmpty( rotString ) )
-							transform.eulerAngles = ParseVector3 ( rotString );
-					}
-				}
-				
-				// update input to be used tihs frame
-				foreach( var changedInput in changedInputs )
+                return;
+			}		
+
+            // go through all changes in recorded input since last frame
+            var changedInputs = new Dictionary<string, Recording.InputInfo>();
+			for( int frame = lastFrame + 1; frame <= currentFrame; frame++ )
+            {
+				foreach( var input in currentRecording.GetInputs ( frame ) )
 				{
-					if ( thisFrameInputs.ContainsKey ( changedInput.Key ) )
-						thisFrameInputs[changedInput.Key] = changedInput.Value;
-					else
-						thisFrameInputs.Add ( changedInput.Key, changedInput.Value );
+                    // thisFrameInputs only updated once per game frame, so all changes, no matter how brief, will be marked
+                    // if button has changed
+                    if ( !thisFrameInputs.ContainsKey ( input.inputName ) || !thisFrameInputs[input.inputName].Equals( input ) )
+					{
+						if ( changedInputs.ContainsKey ( input.inputName ) )
+							changedInputs[input.inputName] = input;
+						else
+							changedInputs.Add( input.inputName, input );
+					}
 				}
 				
-				playbackTime += Time.deltaTime;
+				if ( snapToSyncedLocation )	// custom code more effective, but this is enough sometimes
+				{
+					string posString = currentRecording.GetProperty ( frame, "position" );
+					if ( !string.IsNullOrEmpty ( posString ) )
+						transform.position = ParseVector3 ( posString );
+						
+					string rotString = currentRecording.GetProperty ( frame, "rotation" );
+					if ( !string.IsNullOrEmpty( rotString ) )
+						transform.eulerAngles = ParseVector3 ( rotString );
+				}
 			}
+				
+			// update input to be used this frame
+			foreach( var changedInput in changedInputs )
+			{
+				if ( thisFrameInputs.ContainsKey ( changedInput.Key ) )
+					thisFrameInputs[changedInput.Key] = changedInput.Value;
+				else
+					thisFrameInputs.Add ( changedInput.Key, changedInput.Value );
+			}
+
+			playbackTime += Time.deltaTime;
+			
 		}
 		else if ( _mode == InputVCRMode.Record )
 		{	
@@ -341,7 +339,7 @@ public class InputVCR : MonoBehaviour
                         Debug.Log( "Unsupported input type : " + input.inputType );
                         break;
                     }
-                    
+
 					currentRecording.AddInput ( currentFrame, input );
 				}
 				
@@ -412,14 +410,16 @@ public class InputVCR : MonoBehaviour
 	{
 		if ( _mode == InputVCRMode.Pause )
 			return false;
-		
-		if ( _mode == InputVCRMode.Playback && thisFrameInputs.ContainsKey( buttonName ) )
-			return ( thisFrameInputs[buttonName].buttonState && ( lastFrameInputs == null || !lastFrameInputs.ContainsKey ( buttonName ) || !lastFrameInputs[buttonName].buttonState ) );
-		else
-			return Input.GetButtonDown ( buttonName );
-	}
-	
-	public bool GetButtonUp( string buttonName )
+
+        if (_mode == InputVCRMode.Playback && thisFrameInputs.ContainsKey(buttonName))
+        {
+            return (thisFrameInputs[buttonName].buttonState && (lastFrameInputs == null || !lastFrameInputs.ContainsKey(buttonName) || !lastFrameInputs[buttonName].buttonState));
+        }
+        else
+            return Input.GetButtonDown(buttonName);
+    }
+
+    public bool GetButtonUp( string buttonName )
 	{
 		if ( _mode == InputVCRMode.Pause )
 			return false;
