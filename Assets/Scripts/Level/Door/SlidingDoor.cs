@@ -5,14 +5,18 @@ using UnityEngine;
 
 public class SlidingDoor : Door
 {
-    public Vector3 DoorOpenDirection = Vector3.left;
-    public float DoorOpenDistance = 1;
-    public float DoorOpenSpeed = 1;
+    [Header("Config")]
+    [Tooltip("Direction the door will open in")]
+    public Vector3 DoorOpenDirection = Vector3.left; //todo directions that arent left right forward?
+    [Tooltip("How far the door will open")]
+    public float DoorOpenDistance = 1; //todo have an option to just open the size of the door instead of manual
+    [Tooltip("How fast the door will open and close")]
+    public float DoorOpenSpeed = 1; //todo different open and close speeds?
 
     private Vector3 startPosition;
     private Vector3 finalPosition;
     private float openProgress = 0;
-    Coroutine toggleDelay;
+    private Coroutine toggleDelay;
 
     public enum SlidingDoorState
     {
@@ -29,38 +33,6 @@ public class SlidingDoor : Door
         Physics //Can be slid open, grabbed and pulled open and closed
     }
     private SlidingDoorType slidingDoorType = SlidingDoorType.Mechanized;
-
-    public void TryOpen()
-    {
-        if (slidingDoorState == SlidingDoorState.Open || slidingDoorState == SlidingDoorState.Opening)
-            return;
-        
-        if (doorState == DoorState.Locked || doorState == DoorState.UnlockedStuck)
-            return;
-
-        slidingDoorState = SlidingDoorState.Opening;
-    }
-
-    public void TryClose()
-    {
-        if (slidingDoorState == SlidingDoorState.Closed || slidingDoorState == SlidingDoorState.Closing)
-            return;
-
-        if (doorState == DoorState.Locked || doorState == DoorState.UnlockedStuck)
-            return;
-
-        slidingDoorState = SlidingDoorState.Closing;
-    }
-
-    public void ForceOpen()
-    {
-        slidingDoorState = SlidingDoorState.Opening;
-    }
-
-    public void ForceClose()
-    {
-        slidingDoorState = SlidingDoorState.Closing;
-    }
 
     protected override void Start()
     {
@@ -99,6 +71,53 @@ public class SlidingDoor : Door
         }
     }
 
+    /// <summary>
+    /// Tries to open the door and respects locking mechanisms
+    /// </summary>
+    public void TryOpen()
+    {
+        if (slidingDoorState == SlidingDoorState.Open || slidingDoorState == SlidingDoorState.Opening)
+            return;
+        
+        if (doorState == DoorState.Locked || doorState == DoorState.UnlockedStuck)
+            return;
+
+        slidingDoorState = SlidingDoorState.Opening;
+    }
+
+    /// <summary>
+    /// Tries to close the door and respects locking mechanisms
+    /// </summary>
+    public void TryClose()
+    {
+        if (slidingDoorState == SlidingDoorState.Closed || slidingDoorState == SlidingDoorState.Closing)
+            return;
+
+        if (doorState == DoorState.Locked || doorState == DoorState.UnlockedStuck)
+            return;
+
+        slidingDoorState = SlidingDoorState.Closing;
+    }
+
+    /// <summary>
+    /// Opens the door without checking any restrictions
+    /// </summary>
+    public void ForceOpen()
+    {
+        slidingDoorState = SlidingDoorState.Opening;
+    }
+
+    /// <summary>
+    /// Closes the door without checking any restrictions
+    /// </summary>
+    public void ForceClose()
+    {
+        slidingDoorState = SlidingDoorState.Closing;
+    }
+
+    /// <summary>
+    /// Will attempt to trigger the doors opening or closing respective of its current state
+    /// </summary>
     public void ToggleDoorOpening()
     {
         if (toggleDelay != null)
@@ -111,6 +130,10 @@ public class SlidingDoor : Door
             TryClose();
     }
 
+    /// <summary>
+    /// A delay on toggling the door open and close to prevent pressing multiple times on accident
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator ToggleDelay()
     {
         float t = .1f;
@@ -122,6 +145,9 @@ public class SlidingDoor : Door
         toggleDelay = null;
     }
 
+    /// <summary>
+    /// Resets the door to its initial state
+    /// </summary>
     protected override void ResetControl()
     {
         base.ResetControl();

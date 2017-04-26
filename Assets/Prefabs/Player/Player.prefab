@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4703759145874794}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: PlayerMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4308558968352922}
   - component: {fileID: 65581747322294546}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4028548419995048}
   - component: {fileID: 54808142656936648}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: RightController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ GameObject:
   - component: {fileID: 4167949128820476}
   - component: {fileID: 33121520982035340}
   - component: {fileID: 23566129088798848}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: LeftHandMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,13 +83,30 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4814683842618418}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1400934210915994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4350298000253928}
+  - component: {fileID: 120515168509820294}
+  - component: {fileID: 114358907688456262}
+  m_Layer: 13
+  m_Name: SpawnLineRenderer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
 --- !u!1 &1473671355053576
 GameObject:
   m_ObjectHideFlags: 1
@@ -99,7 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4393735508005422}
   - component: {fileID: 65548883306192046}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +133,7 @@ GameObject:
   - component: {fileID: 4501399876922790}
   - component: {fileID: 23535659991768136}
   - component: {fileID: 33431916557319082}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +151,7 @@ GameObject:
   - component: {fileID: 33012794494689166}
   - component: {fileID: 65801760708666130}
   - component: {fileID: 23481108192835674}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ForwardIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +173,7 @@ GameObject:
   - component: {fileID: 114340566695731402}
   - component: {fileID: 136428770963076320}
   - component: {fileID: 54755110418410458}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Player
   m_TagString: PC
   m_Icon: {fileID: 0}
@@ -171,7 +188,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4582179485647332}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +205,7 @@ GameObject:
   - component: {fileID: 4583760627202972}
   - component: {fileID: 33323226536162394}
   - component: {fileID: 23867242473335324}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: RightHandMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4667667572696832}
   - component: {fileID: 54846828741578942}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: LeftController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,6 +280,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4703759145874794}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4350298000253928
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1400934210915994}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4941203571271776}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4393735508005422
 Transform:
@@ -371,10 +401,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1671073963482714}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.2009735, y: 3.4890003, z: -2.544105}
+  m_LocalPosition: {x: -84.689735, y: 45.769997, z: -40.411053}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4703759145874794}
+  - {fileID: 4350298000253928}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -541,14 +572,14 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1671073963482714}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!54 &54808142656936648
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -656,15 +687,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9fda4063ae726a42b2854dec61ae7e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handMoveMultiplier: 0.2
-  MovementSpeed: 3
-  mouseRotationModifier: 0.5
   controller: {fileID: 136428770963076320}
   VCR: {fileID: 114733201046820772}
   player: {fileID: 114637673291263918}
   rightHand: {fileID: 4814683842618418}
   leftHand: {fileID: 4582179485647332}
-  rigidbody: {fileID: 0}
+  rb: {fileID: 0}
+  handMoveMultiplier: 0.2
+  movementSpeed: 2
+  mouseRotationModifier: 0.5
+--- !u!114 &114358907688456262
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1400934210915994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f423d0b4e99e4bb42b099ea1b2e73025, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myPlayer: {fileID: 114637673291263918}
+  lineRenderer: {fileID: 120515168509820294}
+  FloorRaycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 16640
+  validColor: {r: 0, g: 1, b: 0.37931013, a: 1}
+  invalidColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &114530684058068908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -693,15 +742,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f60b69980824ff478cff1d34709fcf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnZoneLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
-  myPlayerIndex: 0
-  VRObject: {fileID: 0}
   collider: {fileID: 136428770963076320}
   playerMesh: {fileID: 1095698387851230}
   input: {fileID: 114340566695731402}
   myInteractableObject: {fileID: 114240197777397126}
+  spawnIndicator: {fileID: 114358907688456262}
+  spawnZoneLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  myPlayerIndex: 0
 --- !u!114 &114733201046820772
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -752,9 +801,100 @@ MonoBehaviour:
   recordMouseEvents: 1
   syncRecordLocations: 0
   autoSyncLocationRate: 0.15
-  snapToSyncedLocation: 1
+  snapToSyncedLocation: 0
   recordingFrameRate: 60
   _mode: 0
+--- !u!120 &120515168509820294
+LineRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1400934210915994}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a455b4a1f73df444787fbd020bc36476, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: -2.18, z: 0}
+  m_Parameters:
+    serializedVersion: 2
+    widthMultiplier: 0.2
+    widthCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0.40935326
+        value: 0.63998985
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 0.8713467
+        value: 0.24571002
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    colorGradient:
+      serializedVersion: 2
+      key0: {r: 0, g: 1, b: 0.2965517, a: 1}
+      key1: {r: 0, g: 1, b: 0.2965517, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 1
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    numCornerVertices: 4
+    numCapVertices: 4
+    alignment: 0
+    textureMode: 0
+  m_UseWorldSpace: 0
+  m_Loop: 0
 --- !u!136 &136428770963076320
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -2,8 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissionObjectives : MonoBehaviour {
-
+/// <summary>
+/// The MissionObjectives class manages all objectives that exist on the current mission/scene and handles victory status
+/// </summary>
+/// <remarks>
+/// This script exists as a manager that you presently must add all objectives to for configuration
+/// </remarks>
+/// <example>
+/// See TestMission scene for example usage
+/// </example>
+public class MissionObjectives : MonoBehaviour
+{
+    [Header("Config")]
+    [Tooltip("How many characters will be spawned in for use in this mission")]
     public int MaxCharactersAllowed = 2;
 
     private List<BaseObjective> objectives;
@@ -11,6 +22,9 @@ public class MissionObjectives : MonoBehaviour {
     private List<BaseObjective> failedObjectives = new List<BaseObjective>();
     private List<BaseObjective> mandatoryObjectivesRemaining = new List<BaseObjective>();
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void Start()
     {
         objectives = new List<BaseObjective>(GetComponents<BaseObjective>());
@@ -19,6 +33,9 @@ public class MissionObjectives : MonoBehaviour {
         MissionStateManager.instance.OnSetTacticalState += MissionStateManager_OnSetTacticalState;
     }
 
+    /// <summary>
+    /// When the mission state is set to tactical, reset the mission objectives and their statuses
+    /// </summary>
     private void MissionStateManager_OnSetTacticalState()
     {
         completedObjectives.Clear();
@@ -33,6 +50,9 @@ public class MissionObjectives : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// When the mission state is set to play, enable callbacks and begin tracking objectives
+    /// </summary>
     private void MissionStateManager_OnSetPlayState(int index)
     {
         foreach (BaseObjective bo in objectives)
@@ -52,13 +72,20 @@ public class MissionObjectives : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Track the failure of an objective
+    /// </summary>
+    /// <param name="b"></param>
     private void Objective_OnObjectiveFailed(BaseObjective b)
     {
         failedObjectives.Add(b);
         Debug.Log("Failed objective: " + b.ToString());
     }
 
-
+    /// <summary>
+    /// Track the success of an objective
+    /// </summary>
+    /// <param name="b"></param>
     private void Objective_OnObjectiveCompleted(BaseObjective b)
     {
         completedObjectives.Add(b);
@@ -66,6 +93,10 @@ public class MissionObjectives : MonoBehaviour {
         Debug.Log("Completed objective: " + b.ToString());
     }
 
+    /// <summary>
+    /// Attempts to complete a mandatory objective 
+    /// </summary>
+    /// <param name="b"></param>
     private void TryCompleteMandatoryObjective(BaseObjective b)
     {
         if (!mandatoryObjectivesRemaining.Contains(b))

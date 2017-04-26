@@ -27,13 +27,13 @@ TagManager:
   - 
   - 
   - SpawningArea
-  - Hands
-  - TriggerArea
   - 
   - 
-  - 
-  - 
-  - 
+  - VRRig
+  - VRRigTactical
+  - PlayerObject
+  - LevelGeometry
+  - TacticalLevelGeometry
   - 
   - 
   - 

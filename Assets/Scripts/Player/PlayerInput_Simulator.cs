@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using VRTK;
 
+/// <summary>
+/// Extension of the VRTK InputSimulator to allow debugging of the game with keyboard and mouse
+/// </summary>
+/// <remarks>
+/// todo: scrapped for now and not implemented
+/// </remarks>
 public class PlayerInput_Simulator : SDK_InputSimulator {
 
     public bool recording = false;

@@ -128,7 +128,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1077498635837856}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.13, z: 0}
+  m_LocalPosition: {x: 0.93, y: 1.13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224689053190731006}
@@ -221,8 +221,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialized: 0
+  tacticalRigScalar: 10
+  tacticalMoveSpeed: 6
   LeftControllerPointer: {fileID: 0}
   RightControllerPointer: {fileID: 0}
+  TouchpadSlideObject: {fileID: 0}
 --- !u!114 &114467960938714802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -322,6 +325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialized: 0
+  CurrentSceneState: 0
 --- !u!114 &114684076218203408
 MonoBehaviour:
   m_ObjectHideFlags: 1

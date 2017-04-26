@@ -2,12 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The UIManager handles all UI elements
+/// </summary>
+/// <remarks>
+///
+/// </remarks>
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
 
-    public GameObject TacticalMenuObject;
+    [Header("References")]
+    public GameObject tacticalMenuObject;
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void Awake()
     {
         if (instance == null)
@@ -16,6 +26,9 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void Start()
     {
         ResetUI();
@@ -26,25 +39,23 @@ public class UIManager : MonoBehaviour
     /// </summary>
     private void ResetUI()
     {
-        TacticalMenuObject.SetActive(false);
+        tacticalMenuObject.SetActive(false);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void LoadTacticalMenu()
     {
         ResetUI();
 
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void LoadPlayMenu()
     {
         ResetUI();
-    }
-
-    public void OnButtonPress_SetCharacter(int i)
-    {
-        if (MissionStateManager.instance.CanStartPlayMode())
-        {
-            MissionStateManager.instance.StartPlayMode(i);
-        }
     }
 }

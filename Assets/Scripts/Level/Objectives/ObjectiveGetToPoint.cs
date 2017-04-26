@@ -2,17 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectiveGetToPoint : BaseObjective {
-
+/// <summary>
+/// A type of BaseObjective that requires player(s) get to an area
+/// </summary>
+/// <remarks>
+/// This allows an easily configurable trigger area volume that a player must reach to complete an objective or trigger an event
+/// </remarks>
+/// <example>
+/// Attach to the mission objectives and configure the objective point object
+/// </example>
+public class ObjectiveGetToPoint : BaseObjective
+{
+    [Header("Config")]
+    [Tooltip("The number of players that must be present in the trigger area to complete objective")]
     public float playersRequiredOnPoint = 1;
+    [Tooltip("How long the required number of players must stay present on this point")]
     public float timeRequiredInPoint = 0;
-
-    [SerializeField]
-    private ObjectivePoint objectivePoint;
+    [Tooltip("The ObjectivePoint that must be occupied to complete this objective")]
+    public ObjectivePoint objectivePoint;
 
     private List<Player> playersInPoint = new List<Player>();
     private Coroutine pointTimer;
 
+    /// <summary>
+    /// Initialize the objective for tactical mode
+    /// </summary>
     public override void Initialize()
     {
         objectivePoint.SetVisible(true);
@@ -22,6 +36,9 @@ public class ObjectiveGetToPoint : BaseObjective {
         VerifyPoint();
     }
 
+    /// <summary>
+    /// Reset the objective for play mode
+    /// </summary>
     public override void ResetObjective()
     {
         base.ResetObjective();
@@ -34,6 +51,9 @@ public class ObjectiveGetToPoint : BaseObjective {
         objectivePoint.SetVisible(false);
     }
 
+    /// <summary>
+    /// Check that our ObjectivePoint has been created correctly
+    /// </summary>
     private void VerifyPoint()
     {
         Collider c = objectivePoint.transform.GetComponent<Collider>();
@@ -49,8 +69,14 @@ public class ObjectiveGetToPoint : BaseObjective {
         }
         objectivePoint.OnPlayerEnterPoint += OnPlayerEnterPoint;
         objectivePoint.OnPlayerExitPoint += OnPlayerExitPoint;
+        OnObjectiveCompleted += objectivePoint.OnObjectiveComplete;
+        OnObjectiveFailed += objectivePoint.OnObjectiveFail;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="p"></param>
     private void OnPlayerEnterPoint(Player p)
     {
         playersInPoint.Add(p);
@@ -63,6 +89,10 @@ public class ObjectiveGetToPoint : BaseObjective {
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="p"></param>
     private void OnPlayerExitPoint(Player p)
     {
         playersInPoint.Remove(p);
@@ -76,6 +106,10 @@ public class ObjectiveGetToPoint : BaseObjective {
         }
     }
 
+    /// <summary>
+    /// Track the timer of how long players have occupied the point
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator PointTimer()
     {
         float t = 0;

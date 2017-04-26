@@ -2,26 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSpawnManager : MonoBehaviour {
-
+/// <summary>
+/// The PlayerSpawnManager manages when to spawn and respawn players and tracks the primary player
+/// </summary>
+/// <remarks>
+/// 
+/// </remarks>
+public class PlayerSpawnManager : MonoBehaviour
+{
     public static PlayerSpawnManager instance;
 
-    public Transform headsetCameraRig;
-    [HideInInspector]
-    public bool initialized;
+    [Header("References")]
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private Transform headsetCameraRig;
 
-    [SerializeField]
-    private GameObject playerPrefab;
-    MissionObjectives missionObjectives;
-    //private MissionData data;
-    //private MissionData.MissionInfo currentMissionInfo;
-    [SerializeField]
+    [HideInInspector] public bool initialized;
+
+    private MissionObjectives missionObjectives;
     private List<GameObject> playerObjects = new List<GameObject>();
-    [SerializeField]
     private List<SpawnableLocation> spawnPoints;
     private Transform playerParentObject;
     private GameObject primaryPlayerInUse;
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void Awake()
     {
         if (instance == null)
@@ -30,6 +35,9 @@ public class PlayerSpawnManager : MonoBehaviour {
             Destroy(gameObject);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void Start()
     {
         LevelManager.instance.OnMissionLoaded += LevelManager_OnMissionLoaded;
@@ -43,6 +51,10 @@ public class PlayerSpawnManager : MonoBehaviour {
         initialized = true;
     }
 
+    /// <summary>
+    /// Callback for mission loaded, handles menu or mission loading, initializes player instantiation and setup
+    /// </summary>
+    /// <param name="state"></param>
     private void LevelManager_OnMissionLoaded(LevelManager.SceneState state)
     {
         if (state == LevelManager.SceneState.Menu)
@@ -69,6 +81,25 @@ public class PlayerSpawnManager : MonoBehaviour {
             InitializeMission();
         }
     }
+
+    /// <summary>
+    /// Called after OnMissionLoaded to spawn players
+    /// </summary>
+    public void InitializeMission()
+    {
+        SpawnableLocation[] locs = GameObject.FindObjectsOfType<SpawnableLocation>();
+        spawnPoints = new List<SpawnableLocation>(locs);
+
+        for (int i = 0; i < missionObjectives.MaxCharactersAllowed; i++)
+        {
+            SpawnPlayerCharacter(i);
+        }
+    }
+
+    /// <summary>
+    /// Callback for change of state to Play mode, initializes player objects to primary or secondary player objects
+    /// </summary>
+    /// <param name="charIndex"></param>
     private void MissionStateManager_OnSetPlayState(int charIndex)
     {
         for (int i = 0; i < playerObjects.Count; i++) 
@@ -92,6 +123,9 @@ public class PlayerSpawnManager : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// On set to tactical state, remove primary player and reinitialize players for tactical mode
+    /// </summary>
     private void MissionStateManager_OnSetTacticalState()
     {
         if (primaryPlayerInUse != null)
@@ -112,25 +146,23 @@ public class PlayerSpawnManager : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void MissionStateManager_OnSetNullState()
     {
 
     }
 
     /// <summary>
-    /// Called after OnMissionLoaded
+    /// Creates a player and attaches it to a spawnable location 
     /// </summary>
-    public void InitializeMission()
-    {
-        SpawnableLocation[] locs = GameObject.FindObjectsOfType<SpawnableLocation>();
-        spawnPoints = new List<SpawnableLocation>(locs);
-
-        for (int i = 0; i < missionObjectives.MaxCharactersAllowed; i++)
-        {
-            SpawnPlayerCharacter(i);
-        }
-    }
-
+    /// <remarks>
+    /// Spawns the player at the first spawnable location it finds
+    /// 
+    /// todo: designate a default spawn location for each scene
+    /// </remarks>
+    /// <param name="i"></param>
     private void SpawnPlayerCharacter(int i)
     {
         GameObject t = Instantiate(playerPrefab) as GameObject;
@@ -141,6 +173,9 @@ public class PlayerSpawnManager : MonoBehaviour {
         spawnPoints[0].AttachPlayerObject(t, i);
     }
     
+    /// <summary>
+    /// Create a parent object to organize player objects
+    /// </summary>
     private void CreateChildParentObject()
     {
         GameObject g = new GameObject("Players");
@@ -149,6 +184,10 @@ public class PlayerSpawnManager : MonoBehaviour {
         playerParentObject.transform.rotation = Quaternion.identity;
     }
 
+    /// <summary>
+    /// Get the current primary player
+    /// </summary>
+    /// <returns></returns>
     public Player GetActivePlayer()
     {
         return primaryPlayerInUse.GetComponent<Player>();
