@@ -59,7 +59,7 @@ public class SpawnableLocation : MonoBehaviour {
     /// <param name="playerIndex"></param>
     public void AttachPlayerObject(GameObject g, int playerIndex)
     {
-        AttachPlayerObject(g, playerIndex, transform.position + new Vector3(playerIndex, g.GetComponentInChildren<Collider>().bounds.size.y/2, 0));
+        AttachPlayerObject(g, playerIndex, transform.position + new Vector3(0, g.GetComponentInChildren<CapsuleCollider>().height/2, playerIndex));
     }
 
     /// <summary>
@@ -70,6 +70,8 @@ public class SpawnableLocation : MonoBehaviour {
     /// <param name="position"></param>
     public void AttachPlayerObject(GameObject g, int playerIndex, Vector3 position)
     {
+        position.y -= GetComponent<Collider>().bounds.size.y / 2;
+
         foreach (PlayerSpawnData t in playersAttached)
         {
             if (t.playerObject == g)
@@ -100,7 +102,7 @@ public class SpawnableLocation : MonoBehaviour {
         for (int i = 0; i < playersAttached.Count; i++)
         {
             PlayerSpawnData d = playersAttached[i];
-            d.playerObject.GetComponent<Player>().Respawn(d.spawnPosition + new Vector3(0, -transform.localScale.y, 0));
+            d.playerObject.GetComponent<Player>().Respawn(d.spawnPosition + new Vector3(0, 0, 0));
         }
     }
 

@@ -227,6 +227,9 @@ public class PlayerInput : MonoBehaviour {
         VCR.finishedPlayback -= SetIdleMode;
         mode = Mode.Idle;
         VCR.Stop();
+        controller.enabled = true;
+        leftHand.gameObject.SetActive(true);
+        rightHand.gameObject.SetActive(true);
     }
 
     /// <summary>

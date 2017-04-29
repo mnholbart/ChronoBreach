@@ -81,7 +81,7 @@ public class PlayStateManager : MonoBehaviour {
         vrRig.localScale = Vector3.one;
 
         UpdateControllerSliderSpeed();
-        SetLayerOnAll(vrRig.gameObject, LayerMask.NameToLayer("VRRig"));
+        SetLayerOnAll(vrRig.gameObject, "VRRig");
         bodyPhysRaycast.layersToIgnore = bodyPhysicsLayerMaskPlay;
     }
 
@@ -93,11 +93,13 @@ public class PlayStateManager : MonoBehaviour {
     /// </remarks>
     /// <param name="obj"></param>
     /// <param name="layer"></param>
-    private void SetLayerOnAll(GameObject obj, int layer)
+    private void SetLayerOnAll(GameObject obj, string layer)
     {
         foreach (Transform trans in obj.GetComponentsInChildren<Transform>(true))
         {
-            trans.gameObject.layer = layer;
+            if (LayerMask.LayerToName(trans.gameObject.layer).Contains("IgnoreRaycast"))
+                trans.gameObject.layer = LayerMask.NameToLayer(layer + "IgnoreRaycast");
+            else trans.gameObject.layer = LayerMask.NameToLayer(layer);
         }
     }
 

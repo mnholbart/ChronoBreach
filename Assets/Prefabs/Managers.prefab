@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eadb42c128457244a91e7de323ba22c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TacticalMenuObject: {fileID: 1061868209113938}
+  tacticalMenuObject: {fileID: 1061868209113938}
 --- !u!114 &114196806710679430
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -158,12 +158,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dab58f1341d8f348ba4850f779f51a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headsetCameraRig: {fileID: 0}
-  initialized: 0
   playerPrefab: {fileID: 1671073963482714, guid: 736ef2c09d28c85408dd855b3a1733af,
     type: 2}
-  playerObjects: []
-  spawnPoints: []
+  headsetCameraRig: {fileID: 0}
+  initialized: 0
 --- !u!114 &114235469357341216
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -208,6 +206,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b65341c32d5684f9aff04feae46e96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyPhysicsLayerMaskPlay:
+    serializedVersion: 2
+    m_Bits: 45316
   initialized: 0
 --- !u!114 &114353115433589446
 MonoBehaviour:
@@ -220,12 +221,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb21ae7a0ca72944899cbe4add84aa77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialized: 0
+  bodyPhysicsLayerMaskTactical:
+    serializedVersion: 2
+    m_Bits: 26884
   tacticalRigScalar: 10
   tacticalMoveSpeed: 6
-  LeftControllerPointer: {fileID: 0}
-  RightControllerPointer: {fileID: 0}
-  TouchpadSlideObject: {fileID: 0}
+  initialized: 0
 --- !u!114 &114467960938714802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -312,7 +313,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LeftController: {fileID: 0}
   RightController: {fileID: 0}
-  DebugMode: 1
 --- !u!114 &114542964611896976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -324,8 +324,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b114f8cf3e3764196b79a337df57bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialized: 0
+  VRTKRightController: {fileID: 0}
+  VRTKLeftController: {fileID: 0}
   CurrentSceneState: 0
+  initialized: 0
 --- !u!114 &114684076218203408
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -433,7 +435,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialized: 0
-  missionState: 0
 --- !u!114 &114931539058693264
 MonoBehaviour:
   m_ObjectHideFlags: 1

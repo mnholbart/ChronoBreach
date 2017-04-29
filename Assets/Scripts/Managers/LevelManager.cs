@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using VRTK;
 
 /// <summary>
 /// The LevelManager handles changing scenes as well as handling scene geometry
@@ -27,11 +28,16 @@ public class LevelManager : MonoBehaviour {
 
     public static LevelManager instance;
 
+    [Header("References")]
+    public GameObject VRTKRightController;
+    public GameObject VRTKLeftController;
+
     [HideInInspector] public SceneState CurrentSceneState = SceneState.Menu;
     [HideInInspector] public event System.Action<SceneState> OnMissionLoaded;
     [HideInInspector] public bool initialized;
 
     private List<GeometryMaterialSwitcher> levelGeometry = new List<GeometryMaterialSwitcher>();
+    private List<TrackedObject> levelObjects = new List<TrackedObject>();
     private MissionObjectives missionObjectives;
 
     /// <summary>
@@ -64,6 +70,7 @@ public class LevelManager : MonoBehaviour {
     {
         levelGeometry.Clear();
         levelGeometry = GameObject.FindObjectsOfType<GeometryMaterialSwitcher>().ToList();
+        levelObjects = GameObject.FindObjectsOfType<TrackedObject>().ToList();
 
         CurrentSceneState = GetLoadedSceneState();
         if (OnMissionLoaded != null)
@@ -87,9 +94,18 @@ public class LevelManager : MonoBehaviour {
     /// </summary>
     private void MissionStateManager_OnSetTacticalState()
     {
+        VRTKLeftController.GetComponent<VRTK_InteractTouch>().ForceStopTouching();
+        VRTKLeftController.GetComponent<VRTK_InteractGrab>().ForceRelease();
+        VRTKRightController.GetComponent<VRTK_InteractTouch>().ForceStopTouching();
+        VRTKRightController.GetComponent<VRTK_InteractGrab>().ForceRelease();
+
         foreach (GeometryMaterialSwitcher g in levelGeometry)
         {
             g.SetTacticalMaterial();
+        }
+        foreach (TrackedObject o in levelObjects)
+        {
+            o.Reset();
         }
     }
 

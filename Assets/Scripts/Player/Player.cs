@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     public PlayerSpawnIndicator spawnIndicator;
 
     [Header("Config")]
-    [Tooltip("LayerMask for identifying what is a SpawnableLocation")]
+    [Tooltip("LayerMask for identifying what objects to raycast against for finding a spawnable location")]
     public LayerMask spawnZoneLayerMask;
     [Tooltip("Player index assigned to me")]
     public int myPlayerIndex;
@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
 
     private GameObject VRObject;
     private GameObject interactingObject;
+    private Color touchColor;
 
     /// <summary>
     /// 
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
         spawnIndicator.gameObject.SetActive(false);
         myInteractableObject.InteractableObjectUngrabbed += OnUngrabbed;
         myInteractableObject.InteractableObjectGrabbed += OnGrabbed;
+        touchColor = myInteractableObject.touchHighlightColor;
     }
 
     /// <summary>
@@ -56,6 +58,13 @@ public class Player : MonoBehaviour
     {
         myInteractableObject.isGrabbable = b;
         myInteractableObject.enabled = b;
+        if (b)
+        {
+            myInteractableObject.touchHighlightColor = touchColor;
+        } else
+        {
+            myInteractableObject.touchHighlightColor = Color.clear;
+        }
     }
 
     /// <summary>
@@ -122,10 +131,10 @@ public class Player : MonoBehaviour
         spawnIndicator.gameObject.SetActive(false);
         Ray r = new Ray(transform.position, Vector3.down);
         RaycastHit hit;
-        if (Physics.Raycast(r, out hit, 5, spawnZoneLayerMask))
+        if (Physics.Raycast(r, out hit, 5, spawnZoneLayerMask) && hit.collider.GetComponent<SpawnableLocation>())
         {
             OnDetachFromSpawnArea.Invoke(gameObject);
-            Vector3 spawnPoint = hit.point + new Vector3(0, GetComponent<Collider>().bounds.size.y / 2, 0);
+            Vector3 spawnPoint = new Vector3(hit.point.x, hit.collider.transform.position.y + GetComponent<CapsuleCollider>().height/2, hit.point.z);
             hit.transform.GetComponent<SpawnableLocation>().AttachPlayerObject(gameObject, myPlayerIndex, spawnPoint);
         }
         else
@@ -152,7 +161,7 @@ public class Player : MonoBehaviour
     {
         Ray r = new Ray(transform.position, Vector3.down);
         RaycastHit hit;
-        if (Physics.Raycast(r, out hit, 5, spawnZoneLayerMask))
+        if (Physics.Raycast(r, out hit, 5, spawnZoneLayerMask) && hit.collider.GetComponent<SpawnableLocation>())
         {
             return true;
         }

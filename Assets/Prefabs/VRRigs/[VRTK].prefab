@@ -682,7 +682,7 @@ MonoBehaviour:
   createRigidBodyWhenNotTouching: 0
   controllerAttachPoint: {fileID: 0}
   controllerEvents: {fileID: 0}
-  interactTouch: {fileID: 0}
+  interactTouch: {fileID: 114196620415244986}
 --- !u!114 &114014822668645792
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1376,7 +1376,7 @@ MonoBehaviour:
   createRigidBodyWhenNotTouching: 0
   controllerAttachPoint: {fileID: 0}
   controllerEvents: {fileID: 0}
-  interactTouch: {fileID: 0}
+  interactTouch: {fileID: 114621992532817146}
 --- !u!114 &114768847136502792
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1511,7 +1511,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layersToIgnore:
     serializedVersion: 2
-    m_Bits: 1284
+    m_Bits: 9476
   triggerInteraction: 0
 --- !u!114 &114996471629333278
 MonoBehaviour:
