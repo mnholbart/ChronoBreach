@@ -11,9 +11,8 @@ using UnityEngine;
 public class PlayerSpawnIndicator : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField]
-    private Player myPlayer;
-    [SerializeField] private LineRenderer lineRenderer;
+    public PlayerInteractableObject interactableObject;
+    public LineRenderer lineRenderer;
 
     [Header("Config")]
     [Tooltip("LayerMask for valid floors to raycast against")]
@@ -28,7 +27,7 @@ public class PlayerSpawnIndicator : MonoBehaviour
     /// </summary>
 	void Update ()
     {
-		if (myPlayer.IsValidDropPoint())
+		if (interactableObject.IsValidDropPoint())
         {
             SetColor(validColor);
         } else

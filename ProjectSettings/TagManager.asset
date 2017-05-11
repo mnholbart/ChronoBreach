@@ -27,14 +27,14 @@ TagManager:
   - 
   - 
   - SpawningArea
-  - VRRigIgnoreRaycast
-  - VRRigTacticalIgnoreRaycast
-  - VRRig
-  - VRRigTactical
-  - PlayerObject
-  - LevelGeometry
-  - TacticalLevelGeometry
-  - TacticalObject
+  - Player
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
