@@ -17,6 +17,8 @@ TagManager:
   - PC
   - ExcludeTeleport
   - TriggerArea
+  - MissionGeometry
+  - HeadquarterGeometry
   layers:
   - Default
   - TransparentFX

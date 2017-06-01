@@ -55,7 +55,7 @@ public class PlayerInteractableObject : VRTK.VRTK_InteractableObject
         SpawnArea spawnArea;
         if (IsValidDropPoint(out hitPoint, out spawnArea))
         {
-            CBPlayerSpawnManager.instance.UpdatePlayersSpawnPoint(controller, hitPoint, spawnArea);
+            CBPlayerManager.instance.UpdatePlayersSpawnPoint(controller, hitPoint, spawnArea);
         }
     }
 

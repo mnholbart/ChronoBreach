@@ -22,7 +22,7 @@ namespace ChronoBreak
 
         private IEnumerator Start()
         {
-            while (!CBMissionStateManager.instance.initialized || !CBSceneManager.instance.initialized || !CBPlayerSpawnManager.instance.initialized)
+            while (!CBMissionStateManager.instance.initialized || !CBSceneManager.instance.initialized || !CBPlayerManager.instance.initialized)
                 yield return null;
 
             if (InitializeScene != null)

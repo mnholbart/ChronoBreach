@@ -20,14 +20,26 @@ namespace ChronoBreak.StateMachine
             if (OnEndPlayState != null)
                 OnEndPlayState.Invoke();
 
-            CBPlayerSpawnManager.instance.RespawnPlayers();
+            CBPlayerManager.instance.RespawnPlayers();
 
             primaryPlayer = null;
         }
 
         public override void OnInitialize()
         {
+            if (entitiesTracked == null)
+                return;
+
             //StartState will not be called on initial state creation on game startup, so first run stuff should go here
+            foreach (CBEntity e in entitiesTracked)
+            {
+                if (e is PlayerController)
+                {
+                    playersTracked.Add(e as PlayerController);
+                }
+                OnBeginPlayState += e.StartPlayState;
+                OnEndPlayState += e.EndPlayState;
+            }
         }
 
         public override void StartState()
@@ -49,19 +61,20 @@ namespace ChronoBreak.StateMachine
 
         }
 
-        public CBPlayState(List<CBEntity> sceneObjects)
+        public void NewTrackedEntities(List<CBEntity> newSceneObjects)
         {
-            entitiesTracked = sceneObjects;
-
-            foreach (CBEntity e in sceneObjects)
+            if (entitiesTracked != null)
             {
-                if (e is PlayerController)
+                foreach (CBEntity e in entitiesTracked)
                 {
-                    playersTracked.Add(e as PlayerController);
+                    OnBeginPlayState -= e.StartTacticalState;
+                    OnEndPlayState -= e.EndTacticalState;
                 }
-                OnBeginPlayState += e.StartPlayState;
-                OnEndPlayState += e.EndPlayState;
+                entitiesTracked.Clear();
             }
+
+            entitiesTracked = newSceneObjects;
+            OnInitialize();
         }
     }
 

@@ -21,6 +21,10 @@ namespace ChronoBreak
             renderer = GetComponent<MeshRenderer>();
         }
 
+        protected void Start()
+        {
+        }
+
         protected override void ResetObjectToDefault()
         {
             gameObject.SetActive(true);

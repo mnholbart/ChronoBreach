@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneData : MonoBehaviour
+namespace ChronoBreak
 {
+    public class SceneData : MonoBehaviour
+    {
 
-    [Header("Config")]
-    public int MaxNumberOfCharacters = 2;
+        [Header("Config")]
+        public int MaxNumberOfCharacters = 2;
+        public SceneField attachedScene;
 
 
-
+    }
 }

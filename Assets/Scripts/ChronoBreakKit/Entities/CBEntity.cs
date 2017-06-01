@@ -38,6 +38,8 @@ namespace ChronoBreak
 
             ResetObject();
             ResetObjectToDefault();
+
+            gameObject.SetActive(false);
         }
 
         public virtual void EndTacticalState()

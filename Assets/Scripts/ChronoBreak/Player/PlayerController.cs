@@ -13,6 +13,10 @@ public class PlayerController : CBEntity
 
     private CBStateMachine stateMachine;
 
+    public void OnEnable()
+    {
+    }
+
     protected override void Awake()
     {
         base.Awake();

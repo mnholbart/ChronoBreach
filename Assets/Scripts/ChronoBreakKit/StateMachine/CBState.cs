@@ -6,7 +6,6 @@ namespace ChronoBreak.StateMachine
 {
     public abstract class CBState
     {
-
         private CBStateMachine _machine;
 
 
