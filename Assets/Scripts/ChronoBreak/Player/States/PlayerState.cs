@@ -30,9 +30,7 @@ public abstract class PlayerState : CBState
     public override void Update(float deltaTime)
     {
 
-    }
-
-    
+    }    
 
     public PlayerState(PlayerController player, InputVCR newVCR)
     {

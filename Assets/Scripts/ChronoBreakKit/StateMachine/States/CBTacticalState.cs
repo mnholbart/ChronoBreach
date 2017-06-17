@@ -74,14 +74,10 @@ namespace ChronoBreak.StateMachine
         public void NewTrackedEntities(List<CBEntity> newSceneObjects, List<GameObject> geometry)
         {
             if (entitiesTracked != null)
-            {
-                foreach (CBEntity e in entitiesTracked)
-                {
-                    OnBeginTacticalState -= e.StartTacticalState;
-                    OnEndTacticalState -= e.EndTacticalState;
-                }
                 entitiesTracked.Clear();
-            }
+
+            OnBeginTacticalState = null;
+            OnEndTacticalState = null;
 
             if (geometryTracked != null)
             {

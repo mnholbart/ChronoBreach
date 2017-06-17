@@ -19,6 +19,7 @@ TagManager:
   - TriggerArea
   - MissionGeometry
   - HeadquarterGeometry
+  - Hologram
   layers:
   - Default
   - TransparentFX
@@ -30,7 +31,7 @@ TagManager:
   - 
   - SpawningArea
   - Player
-  - 
+  - Hologram
   - 
   - 
   - 

@@ -11,8 +11,7 @@ namespace ChronoBreak
         public static CBSceneManager instance;
 
         public System.Action<SceneData, List<CBEntity>, List<GameObject>> OnMissionLoaded;
-        
-        public SceneData currentSceneData { get; private set; }
+        public System.Action OnMissionUnloaded;
 
         [HideInInspector] public bool initialized = false;
 
@@ -21,7 +20,15 @@ namespace ChronoBreak
         private Dictionary<GameObject, SceneData> sceneData = new Dictionary<GameObject, SceneData>();
         private const string sceneDataPath = "SceneData";
         private int currentHologramSceneIndex;
-        private Scene loadedScene;
+        private Scene loadedGameScene;
+        private Scene menuScene;
+        private SceneData selectedSceneData
+        {
+            get
+            {
+                return sceneData[sceneDataObjects[currentHologramSceneIndex]];
+            }
+        }
 
         public enum SceneType
         {
@@ -39,6 +46,7 @@ namespace ChronoBreak
                 Destroy(gameObject);
 
             SceneManager.sceneLoaded += SceneLoaded;
+            SceneManager.sceneUnloaded += SceneUnloaded;
         }
 
         private void Start()
@@ -48,6 +56,7 @@ namespace ChronoBreak
             LoadedSceneType = GetCurrentSceneType();
             if (LoadedSceneType == SceneType.Menu)
             {
+                menuScene = SceneManager.GetActiveScene();
                 hologram = LoadHQHologram();
                 sceneDataObjects = LoadSceneData();
 
@@ -57,7 +66,9 @@ namespace ChronoBreak
                 }
                 else
                 {
-                    hologram.OnLevelTryStart += TryStartScene;
+                    hologram.OnLevelTryStart += TryLoadSelectedMission;
+                    hologram.OnLevelTryChangeIncreaseIndex += IncreaseSceneIndex;
+                    hologram.OnLevelTryChangeDecreaseIndex += DecreaseSceneIndex;
                     CacheSceneData();
                     initialized = true;
                 }
@@ -68,20 +79,67 @@ namespace ChronoBreak
             }
         }
 
-        private void TryStartScene()
+        private void TryLoadSelectedMission()
         {
-            SceneData data = sceneData[sceneDataObjects[currentHologramSceneIndex]];
+            if (loadedGameScene.name == selectedSceneData.attachedScene.SceneName)
+                return;
 
-            if (loadedScene == null || data.attachedScene.SceneName != loadedScene.name)
-            {
-                CBPlayerManager.instance.SetActivePlayers(data.MaxNumberOfCharacters);
-                SceneManager.LoadScene(data.attachedScene, LoadSceneMode.Additive);
-            }
+            StartCoroutine(LoadCurrentHologramSceneIndexMission());
+        }
+
+        private IEnumerator LoadCurrentHologramSceneIndexMission()
+        {
+            Coroutine UnloadCoroutine = StartCoroutine(UnloadCurrentGameScene());
+            yield return UnloadCoroutine;
+
+            SceneData data = selectedSceneData;
+
+            CBPlayerManager.instance.SetActivePlayers(data.MaxNumberOfCharacters);
+            SceneManager.LoadScene(data.attachedScene, LoadSceneMode.Additive);
+        }
+
+        private IEnumerator UnloadCurrentGameScene()
+        {
+            Scene s = SceneManager.GetActiveScene();
+
+            if (s == menuScene) //no game scene to unload
+                yield break;
+
+            SceneManager.SetActiveScene(menuScene);
+            yield return SceneManager.UnloadSceneAsync(loadedGameScene);
         }
 
         private void Update()
         {
 
+        }
+
+        private void IncreaseSceneIndex()
+        {
+            //If we go out of upper bound, wrap back to 0
+            if (currentHologramSceneIndex + 1 >= sceneDataObjects.Count)
+            {
+                currentHologramSceneIndex = 0;
+            }
+            else
+            {
+                currentHologramSceneIndex++;
+            }
+            hologram.SetActivelyRenderedScene(sceneDataObjects[currentHologramSceneIndex]);
+        }
+
+        private void DecreaseSceneIndex()
+        {
+            //If 0, wrap to the upper bound
+            if (currentHologramSceneIndex == 0)
+            {
+                currentHologramSceneIndex = sceneDataObjects.Count - 1;
+            }
+            else
+            {
+                currentHologramSceneIndex--;
+            }
+            hologram.SetActivelyRenderedScene(sceneDataObjects[currentHologramSceneIndex]);
         }
 
         public SceneType GetCurrentSceneType()
@@ -100,6 +158,12 @@ namespace ChronoBreak
             return SceneType.Invalid;
         }
 
+        private void SceneUnloaded(Scene s)
+        {
+            if (OnMissionUnloaded != null)
+                OnMissionUnloaded.Invoke();
+        }
+
         private void SceneLoaded(Scene scene, LoadSceneMode mode)
         {
             if (scene.path.Contains("Menu")) //todo probably not a good way to check if menu
@@ -108,13 +172,13 @@ namespace ChronoBreak
             SceneData data = sceneData[sceneDataObjects[currentHologramSceneIndex]];
             if (data.attachedScene.SceneName == scene.name)
             {
-                loadedScene = scene;
-                SceneManager.SetActiveScene(loadedScene);
+                loadedGameScene = scene;
+                SceneManager.SetActiveScene(loadedGameScene);
 
                 CBEntity[] e = GameObject.FindObjectsOfType<CBEntity>();
                 List<CBEntity> entities = new List<CBEntity>(e.Where(a => a.GetComponent<PlayerController>() == null));
                 List<GameObject> geometry = new List<GameObject>(GameObject.FindGameObjectsWithTag("MissionGeometry"));
-
+                
                 if (OnMissionLoaded != null) 
                     OnMissionLoaded.Invoke(data, entities, geometry);
             }

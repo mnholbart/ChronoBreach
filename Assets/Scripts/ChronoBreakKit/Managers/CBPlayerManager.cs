@@ -9,13 +9,17 @@ namespace ChronoBreak
         public static CBPlayerManager instance;
 
         [Header("References")]
-        public GameObject playerPrefab;
+        public GameObject PlayerPrefab;
+        public Transform PlayerSpawnLocation;
 
         [HideInInspector] public bool initialized = false;
-        
-        private List<PlayerController> playerControllers = new List<PlayerController>();
+
+        private List<PlayerController> allPlayerControllers = new List<PlayerController>();
+        private List<PlayerController> activePlayerControllers = new List<PlayerController>();
         private List<SpawnArea> spawnAreas = new List<SpawnArea>();
         private Dictionary<PlayerController, SpawnArea> playersSpawnAreas = new Dictionary<PlayerController, SpawnArea>();
+
+        private const int maxPlayerObjects = 4;
 
         public void Awake()
         {
@@ -28,19 +32,31 @@ namespace ChronoBreak
         public void Start()
         {
             CBSceneManager.instance.OnMissionLoaded += CBSceneManager_OnMissionLoaded;
+            CBSceneManager.instance.OnMissionUnloaded += CBSceneManager_OnMissionUnloaded;
 
             initialized = true;
         }
 
         public void SetActivePlayers(int count)
         {
-            foreach (PlayerController pc in playerControllers)
-            {
-                Destroy(pc);
-            }
-            playerControllers.Clear();
+            if (activePlayerControllers == null || activePlayerControllers.Count == 0)
+                InstantiatePlayerObjects(maxPlayerObjects);
 
-            InstantiatePlayerObjects(count);
+            activePlayerControllers.Clear();
+            for (int i = 0; i < maxPlayerObjects; i++)
+            {
+                PlayerController pc = allPlayerControllers[i];
+
+                if (i < count)
+                {
+                    pc.gameObject.SetActive(true);
+                    activePlayerControllers.Add(pc);
+                }
+                else
+                {
+                    pc.gameObject.SetActive(false);
+                }
+            }
         }
 
         private void CBSceneManager_OnMissionLoaded(SceneData data, List<CBEntity> entities, List<GameObject> geometry)
@@ -56,15 +72,23 @@ namespace ChronoBreak
             SetDefaultPlayerSpawnAreas();
         }
 
+        private void CBSceneManager_OnMissionUnloaded()
+        {
+            playersSpawnAreas.Clear();
+            spawnAreas.Clear();
+        }
+
         private void SetDefaultPlayerSpawnAreas()
         {
+            playersSpawnAreas.Clear();
+
             if (spawnAreas.Count == 0)
             {
                 Debug.LogError("No Spawn Areas found in scene");
                 return;
             }
             SpawnArea defaultArea = spawnAreas[0];
-            foreach (PlayerController pc in playerControllers)
+            foreach (PlayerController pc in activePlayerControllers)
             {
                 defaultArea.AttachPlayerToSpawnArea(pc);
                 playersSpawnAreas[pc] = defaultArea;
@@ -75,9 +99,9 @@ namespace ChronoBreak
         {
             for (int i = 0; i < numSpawn; i++)
             {
-                GameObject po = Instantiate(playerPrefab) as GameObject;
+                GameObject po = Instantiate(PlayerPrefab) as GameObject;
                 PlayerController pc = po.GetComponent<PlayerController>();
-                playerControllers.Add(pc);
+                allPlayerControllers.Add(pc);
             }
         }
 
@@ -105,11 +129,26 @@ namespace ChronoBreak
             }
         }
 
-        public PlayerController GetPlayerAtIndex(int i)
+        public PlayerController GetActivePlayerAtIndex(int i)
         {
-            if (playerControllers.Count > i)
-                return playerControllers[i];
+            if (activePlayerControllers.Count > i)
+                return activePlayerControllers[i];
             return null;
+        }
+
+        public PlayerController GetAllPlayerAtIndex(int i)
+        {
+            if (allPlayerControllers.Count > i)
+                return allPlayerControllers[i];
+            return null;
+        }
+
+        public void MovePlayersToHeadquarterPositions()
+        {
+            Debug.Log("ASD");
+            foreach (PlayerController pc in allPlayerControllers)
+            {
+            }
         }
     }
 

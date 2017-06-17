@@ -10,7 +10,9 @@ namespace ChronoBreak
         private float colliderYOffset;
         private new MeshRenderer renderer;
         private new Collider collider;
-        private Dictionary<PlayerController, Vector3> playerSpawnLocations = new Dictionary<PlayerController, Vector3>();
+        //private Dictionary<PlayerController, Vector3> playerSpawnLocations = new Dictionary<PlayerController, Vector3>();
+
+        
 
         protected override void Awake()
         {
@@ -51,24 +53,24 @@ namespace ChronoBreak
 
         public void UpdateSpawnLocation(PlayerController pc, Vector3 point)
         {
-            if (playerSpawnLocations.ContainsKey(pc))
+            /*if (playerSpawnLocations.ContainsKey(pc))
             {
                 playerSpawnLocations[pc] = point;
-            }
+            }*/
         }
 
         public void AttachPlayerToSpawnArea(PlayerController pc)
         {
-            Vector3 pos = GetNewDefaultSpawnPosition();
-            AttachPlayerToSpawnArea(pc, pos);
+            //Vector3 pos = GetNewDefaultSpawnPosition();
+            //AttachPlayerToSpawnArea(pc, pos);
         }
 
         public void AttachPlayerToSpawnArea(PlayerController pc, Vector3 spawnPoint)
         {
-            if (playerSpawnLocations.ContainsKey(pc))
+            /*if (playerSpawnLocations.ContainsKey(pc))
                 return;
 
-            playerSpawnLocations[pc] = spawnPoint;
+            playerSpawnLocations[pc] = spawnPoint;*/
         }
 
         private Vector3 GetNewDefaultSpawnPosition()
@@ -77,7 +79,7 @@ namespace ChronoBreak
             //choose random or predictable points that are inside the bounds of the area and dont collide with other 
             //player objects existing spawn points
 
-            Vector3 spawnPoint = transform.position - new Vector3(0, colliderYOffset, 0);
+            /*Vector3 spawnPoint = transform.position - new Vector3(0, colliderYOffset, 0);
             foreach (Vector3 existingSpawn in playerSpawnLocations.Values)
             {
                 if (Vector3.Distance(spawnPoint, existingSpawn) < 1)
@@ -86,27 +88,29 @@ namespace ChronoBreak
                 }
             }
 
-            return spawnPoint;
+            return spawnPoint;*/
+
+            return new Vector3();
         }
 
         public void RespawnPlayer(PlayerController pc)
         {
-            Vector3 spawnPosition;
+            /*Vector3 spawnPosition;
             if (playerSpawnLocations.TryGetValue(pc, out spawnPosition))
             {
                 pc.Respawn(spawnPosition);
-            }
+            }*/
         }
 
         public void RemovePlayer(PlayerController pc)
         {
-            if (playerSpawnLocations.ContainsKey(pc))
+            /*if (playerSpawnLocations.ContainsKey(pc))
             {
                 playerSpawnLocations.Remove(pc);
             } else
             {
                 Debug.LogWarning("Tried to remove a player from SpawnArea that wasn't registered");
-            }
+            }*/
         }
     }
 }

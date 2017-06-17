@@ -9,5 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu/Menu.unity
     guid: fc02f94d34a65ad489335aa612d6f125
   - enabled: 1
-    path: Assets/Scenes/Game/TestMission.unity
-    guid: a1cc029dee1b06f49b79c00fb677111e
+    path: Assets/Scenes/Game/DebugMission.unity
+    guid: 953387b1e50062148be742712a25fe36
+  - enabled: 1
+    path: Assets/Scenes/Game/DebugMission2.unity
+    guid: 27e58ae9477322a449fb521b4067a38b

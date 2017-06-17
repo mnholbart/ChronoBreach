@@ -18,10 +18,10 @@ public class DissolveBoxPosition : MonoBehaviour {
 				gizmo.SetActive(false);
 
 			gizmo.transform.localScale = boxSize;
-			gizmo.transform.position = boxPosition;
+			gizmo.transform.localPosition = boxPosition;
 
 			Shader.SetGlobalVector("_BoxSize", boxSize);
-			Shader.SetGlobalVector("_BoxPos", boxPosition);
+			Shader.SetGlobalVector("_BoxPos", transform.TransformPoint(boxPosition));
 		}
 	}
 }

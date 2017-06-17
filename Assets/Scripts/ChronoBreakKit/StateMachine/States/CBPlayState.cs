@@ -8,6 +8,7 @@ namespace ChronoBreak.StateMachine
     public class CBPlayState : CBState
     {
         public PlayerController primaryPlayer = null;
+        public bool isSpectator = false;
 
         public event Action OnEndPlayState;
         public event Action OnBeginPlayState;
@@ -23,6 +24,7 @@ namespace ChronoBreak.StateMachine
             CBPlayerManager.instance.RespawnPlayers();
 
             primaryPlayer = null;
+            isSpectator = false;
         }
 
         public override void OnInitialize()
@@ -49,7 +51,7 @@ namespace ChronoBreak.StateMachine
 
             foreach (PlayerController pc in playersTracked)
             {
-                if (pc == primaryPlayer)
+                if (!isSpectator && pc == primaryPlayer)
                     pc.SetToPrimaryPlayer();
                 else
                     pc.SetToSecondaryPlayer();
@@ -64,14 +66,10 @@ namespace ChronoBreak.StateMachine
         public void NewTrackedEntities(List<CBEntity> newSceneObjects)
         {
             if (entitiesTracked != null)
-            {
-                foreach (CBEntity e in entitiesTracked)
-                {
-                    OnBeginPlayState -= e.StartTacticalState;
-                    OnEndPlayState -= e.EndTacticalState;
-                }
                 entitiesTracked.Clear();
-            }
+
+            OnBeginPlayState = null;
+            OnEndPlayState = null;
 
             entitiesTracked = newSceneObjects;
             OnInitialize();
